@@ -2,6 +2,8 @@
     <VitePwaManifest />
     <div v-if="bgIsGray" class="bg-[#f3f3f1] fixed w-full h-full z-[-1]" />
     <NuxtPage />
+
+    <PreviewOverlay v-if="!isMobile && isPreviewOverlay" />
 </template>
 
 <script setup>
