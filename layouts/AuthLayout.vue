@@ -32,7 +32,6 @@
 </template>
 
 <script setup>
-import { useRoute } from "nuxt/app";
 import { storeToRefs } from "pinia";
 
 import { useUserStore } from "../stores/user";
