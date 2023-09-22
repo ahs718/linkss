@@ -39,6 +39,17 @@
                             },
                         ]"
                     />
+
+                    <div v-for="link in fakeLink" class="mt-4">
+                        <LinkBox
+                            v-if="link"
+                            :link="link"
+                            :selectedId="selectedInput.id"
+                            :selectedStr="selectedInput.str"
+                            @updatedInput="updatedInput"
+                            class="mt-6"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,6 +61,27 @@ import AdminLayout from "~/layouts/AdminLayout.vue";
 import { useUserStore } from "~/stores/user";
 
 const userStore = useUserStore();
+
+const fakeLink = [
+    {
+        id: 1,
+        name: "Github",
+        url: "https://github.com/ahs718",
+        image: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+    },
+    {
+        id: 2,
+        name: "LinkedIn",
+        url: "https://www.linkedin.com/in/aiden-schulman",
+        image: "https://img.freepik.com/premium-vector/square-linkedin-logo-isolated-white-background_469489-892.jpg",
+    },
+    {
+        id: 3,
+        name: "Instagram",
+        url: "https://www.instagram.com/ahs718_",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/600px-Instagram_logo_2022.svg.png?20220518162235",
+    },
+];
 
 let selectedInput = ref({ id: 0, str: "" });
 let showAddLink = ref(false);
