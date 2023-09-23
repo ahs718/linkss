@@ -259,7 +259,6 @@ onMounted(() => {
         let editNameInput = document.getElementById(
             `editNameInput-${link.value.id}`
         );
-
         if (
             editNameInput &&
             !editNameInput.contains(e.target) &&
@@ -275,7 +274,6 @@ onMounted(() => {
         let editLinkInput = document.getElementById(
             `editLinkInput-${link.value.id}`
         );
-
         if (
             editLinkInput &&
             !editLinkInput.contains(e.target) &&
