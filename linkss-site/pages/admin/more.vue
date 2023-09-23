@@ -29,7 +29,10 @@ import { useUserStore } from "~/stores/user";
 
 const userStore = useUserStore();
 const router = useRouter();
+
 let windowWidth = ref(process.client ? window.innerWidth : "");
+
+definePageMeta({ middleware: "is-logged-out" });
 
 onMounted(() => {
     window.addEventListener("resize", () => {
@@ -38,7 +41,16 @@ onMounted(() => {
 });
 
 const logout = async () => {
-    let res = confirm("Are you sure you want to logout?");
+    let res = confirm("Are you sure you want to sign out?");
+    try {
+        if (res) {
+            await userStore.logout();
+            router.push("/");
+            return;
+        }
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 watch(

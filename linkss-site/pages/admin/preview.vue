@@ -1,86 +1,83 @@
 <template>
-    <div
-        class="fixed overflow-auto w-full h-screen"
-        :class="userStore.theme?.color"
-    />
-    <AdminLayout>
-        <div id="PreviewAdminPage" class="w-full mx-auto pt-32 relative z-10">
-            <div class="mx-auto w-full">
-                <div class="h-full mx-auto w-full">
-                    <!-- userStore.image -->
-                    <img
-                        class="rounded-full min-w-[120px] w-[120px] mx-auto"
-                        src="https://picsum.photos/id/8/300/320"
+    <AuthLayout>
+        <div class="mt-10">
+            <h1 class="lg:text-5xl text-3xl text-center font-extrabold">
+                Log in to your Linktree
+            </h1>
+
+            <form class="mt-12" @submit.prevent="login()">
+                <div>
+                    <TextInput
+                        placeholder="Email: link@gmail.com"
+                        v-model:input="email"
+                        inputType="email"
+                        :error="errors && errors.email ? errors.email[0] : ''"
                     />
-
-                    <div
-                        class="text-center text-2xl font-semibold mt-2"
-                        :class="userStore.theme?.text"
-                    >
-                        @ahs
-                    </div>
-
-                    <div
-                        class="text-center text-lg font-light mt-2 mb-10"
-                        :class="userStore.theme?.text"
-                    >
-                        <div class="px-8">
-                            {{ userStore.bio || "this is the bio section" }}
-                        </div>
-                    </div>
-
-                    <!-- userStore.allLinks -->
-                    <div v-for="link in fakeLink">
-                        <a
-                            :href="link.url"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="flex items-center relative w-[calc(100%-10px)] mx-auto border bg-white mt-4 p-1 rounded-lg"
-                        >
-                            <img
-                                class="rounded-lg h-[55px] aspect-square"
-                                :src="link.image"
-                            />
-
-                            <div
-                                class="absolute text-[20px] text-center w-full"
-                            >
-                                {{ link.name }}
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="pb-12" />
                 </div>
+
+                <div class="mt-4">
+                    <TextInput
+                        placeholder="Password"
+                        v-model:input="password"
+                        inputType="password"
+                        :error="
+                            errors && errors.password ? errors.password[0] : ''
+                        "
+                    />
+                </div>
+
+                <div class="mt-10">
+                    <button
+                        type="submit"
+                        class="rounded-full w-full p-3 font-bold"
+                        :disabled="!email || !password"
+                        :class="
+                            email && password
+                                ? 'bg-[#8228D9] hover:bg-[#6c21b3] text-white'
+                                : 'bg-[#EFF0EB] text-[#A7AAA2]'
+                        "
+                    >
+                        Log in
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-[14px] text-center pt-12">
+                Don't have an account?
+                <NuxtLink to="/register" class="text-[#8228D9] underline">
+                    Sign up
+                </NuxtLink>
             </div>
         </div>
-    </AdminLayout>
+    </AuthLayout>
 </template>
 
 <script setup>
-import AdminLayout from "~/layouts/AdminLayout.vue";
-import { useUserStore } from "~/stores/user";
+import AuthLayout from "~/layouts/AuthLayout.vue";
 
+import { useUserStore } from "~~/stores/user";
 const userStore = useUserStore();
 
-const fakeLink = [
-    {
-        id: 1,
-        name: "Github",
-        url: "https://github.com/ahs718",
-        image: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-    },
-    {
-        id: 2,
-        name: "LinkedIn",
-        url: "https://www.linkedin.com/in/aiden-schulman",
-        image: "https://img.freepik.com/premium-vector/square-linkedin-logo-isolated-white-background_469489-892.jpg",
-    },
-    {
-        id: 3,
-        name: "Instagram",
-        url: "https://www.instagram.com/ahs718_",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/600px-Instagram_logo_2022.svg.png?20220518162235",
-    },
-];
+const router = useRouter();
+
+definePageMeta({ middleware: "is-logged-out" });
+
+let email = ref(null);
+let password = ref(null);
+let errors = ref(null);
+
+const login = async () => {
+    errors.value = null;
+
+    try {
+        await userStore.getTokens();
+        await userStore.login(email.value, password.value);
+        await userStore.getUser();
+        await userStore.getAllLinks();
+        router.push("/admin");
+    } catch (error) {
+        console.log(error);
+        errors.value = error.response.data.errors;
+    }
+};
 </script>

@@ -389,7 +389,19 @@ const openMenu = (str) => {
     }
 };
 
-const logout = async () => {};
+const logout = async () => {
+    let res = confirm("Are you sure you want to sign out?");
+    try {
+        if (res) {
+            await userStore.logout();
+            router.push("/");
+            return;
+        }
+        isTopNav.value = false;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 watch(
     () => windowWidth.value,

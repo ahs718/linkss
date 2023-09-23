@@ -1,13 +1,11 @@
 <template>
-    <div>
-        <AuthLayout>
-            <div class="mt-10">
-                <h1 class="lg:text-5xl text-3xl text-center font-extrabold">
-                    Create your account
-                </h1>
-            </div>
+    <AuthLayout>
+        <div class="mt-10">
+            <h1 class="lg:text-5xl text-3xl text-center font-extrabold">
+                Create your account
+            </h1>
 
-            <form class="mt-12" @submit.prevent="($event) => register()">
+            <form class="mt-12" @submit.prevent="register()">
                 <div>
                     <TextInput
                         placeholder="Username"
@@ -63,22 +61,48 @@
                 </div>
             </form>
 
-            <div class="text-sm text-center pt-12">
+            <div class="text-[14px] text-center pt-12">
                 Already have an account?
                 <NuxtLink to="/" class="text-[#8228d9] underline">
                     Log in
                 </NuxtLink>
             </div>
-        </AuthLayout>
-    </div>
+        </div>
+    </AuthLayout>
 </template>
 
 <script setup>
 import AuthLayout from "~/layouts/AuthLayout.vue";
+
+import { useUserStore } from "~/stores/user";
+const userStore = useUserStore();
+
+const router = useRouter();
+
+definePageMeta({ middleware: "is-logged-in" });
 
 let name = ref(null);
 let email = ref(null);
 let password = ref(null);
 let confirmPassword = ref(null);
 let errors = ref(null);
+
+const register = async () => {
+    errors.value = null;
+
+    try {
+        await userStore.getTokens();
+        await userStore.register(
+            name.value,
+            email.value,
+            password.value,
+            confirmPassword.value
+        );
+        await userStore.getUser();
+        router.push("/admin");
+    } catch (error) {
+        console.log(error);
+        errors.value = error.response.data.errors;
+    }
+};
 </script>
