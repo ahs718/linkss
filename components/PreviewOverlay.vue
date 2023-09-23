@@ -66,7 +66,7 @@
         >
             <div class="mx-auto mb-16 w-full p-3">
                 <div class="h-full mx-auto w-full overflow-auto z-10">
-                    <!-- userStore.image -->
+                    <!-- :src="userStore.image" -->
                     <img
                         class="rounded-full min-w-[100px] w-[100px] mx-auto"
                         src="https://picsum.photos/id/8/300/320"
