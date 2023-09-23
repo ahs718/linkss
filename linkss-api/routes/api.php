@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LinkController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserImageController;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::patch('users/{user}', [UserController::class, 'update']);
 
     Route::post('user-image', [UserImageController::class, 'store']);
+
+    Route::get('links', [LinkController::class, 'index']);
+    Route::post('links', [LinkController::class, 'store']);
+    Route::patch('links/{link}', [LinkController::class, 'update']);
+    Route::delete('links/{link}', [LinkController::class, 'destroy']);
+
+    Route::post('link-image', [LinkImageController::class, 'store']);
 });
