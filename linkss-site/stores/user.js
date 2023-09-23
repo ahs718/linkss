@@ -21,6 +21,51 @@ export const useUserStore = defineStore("user", {
         isPreviewOverlay: false,
     }),
     actions: {
+        hidePageOverflow(val, id) {
+            if (val) {
+                document.body.style.overflow = "hidden";
+                if (id) {
+                    document.getElementById(id).style.overflow = "hidden";
+                }
+                return;
+            }
+            document.body.style.overflow = "visible";
+            if (id) {
+                document.getElementById(id).style.overflow = "visible";
+            }
+        },
+
+        allLowerCaseNoCaps(str) {
+            return str.split(" ").join("").toLowerCase();
+        },
+
+        async hasSessionExpired() {
+            await $axios.interceptors.response.use(
+                (response) => {
+                    // Call was successful, continue
+                    return response;
+                },
+                (error) => {
+                    switch (error.response.status) {
+                        case 401: // Not logged in
+                        case 410: // Session expired
+                        case 503: // Down for maintenance
+                            this.resetState();
+                            window.location.href = "/";
+                            break;
+                        case 500:
+                            alert(
+                                "Something went wrong! The team has been notified."
+                            );
+                            break;
+                        default:
+                            // Allow individual requests to handle other errors
+                            return Promise.reject(error);
+                    }
+                }
+            );
+        },
+
         async getTokens() {
             await $axios.get("/sanctum/csrf-cookie");
         },
@@ -50,7 +95,61 @@ export const useUserStore = defineStore("user", {
             this.$state.bio = res.data.bio;
             this.$state.image = res.data.image;
 
-            // this.getUserTheme();
+            this.getUserTheme();
+        },
+
+        async updateUserImage(data) {
+            await $axios.post("/api/user-image", data);
+        },
+
+        async updateLinkImage(data) {
+            await $axios.post("/api/link-image", data);
+        },
+
+        async deleteLink(id) {
+            await $axios.delete(`/api/links/${id}`);
+        },
+
+        getUserTheme() {
+            this.$state.colors.forEach((color) => {
+                if (this.$state.theme_id === color.id) {
+                    this.$state.theme = color;
+                }
+            });
+        },
+
+        async updateUserDetails(name, bio) {
+            await $axios.patch(`/api/users/${this.$state.id}`, {
+                name: name,
+                bio: bio,
+            });
+        },
+
+        async updateTheme(themeId) {
+            let res = await $axios.patch("/api/themes", {
+                theme_id: themeId,
+            });
+            this.$state.theme_id = res.data.theme_id;
+            this.getUserTheme();
+        },
+
+        async getAllLinks() {
+            let res = await $axios.get("/api/links");
+            this.$state.allLinks = res.data;
+        },
+
+        async addLink(name, url) {
+            await $axios.post("/api/links", {
+                name: name,
+                url: url,
+            });
+        },
+
+        async updateLink(id, name, url) {
+            await $axios.patch(`/api/links/${id}`, {
+                name: name,
+                url: url,
+            });
         },
 
         async logout() {
