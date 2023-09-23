@@ -1,4 +1,3 @@
-// stores/counter.js
 import { defineStore } from "pinia";
 import axios from "~/plugins/axios";
 
@@ -42,14 +41,15 @@ export const useUserStore = defineStore("user", {
         async hasSessionExpired() {
             await $axios.interceptors.response.use(
                 (response) => {
-                    // Call was successful, continue
+                    // Call was successful, continue.
                     return response;
                 },
                 (error) => {
                     switch (error.response.status) {
                         case 401: // Not logged in
-                        case 410: // Session expired
+                        case 419: // Session expired
                         case 503: // Down for maintenance
+                            // Bounce the user to the login screen with a redirect back
                             this.resetState();
                             window.location.href = "/";
                             break;
