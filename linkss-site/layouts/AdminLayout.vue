@@ -6,18 +6,11 @@
             class="w-full flex items-center justify-between md:pt-2.5 md:px-2.5"
         >
             <div
-                class="flex items-center justify-between md:rounded-full md:shadow-sm px-2 md:pl-6 pl-4 py-[8px] bg-white w-full border-b"
+                class="flex items-center justify-between md:rounded-full md:shadow-sm px-2 md:pl-6 pl-4 bg-white w-full border-b"
             >
                 <div
                     class="flex items-center justify-start w-full max-w-[500px]"
                 >
-                    <NuxtLink to="/admin">
-                        <img
-                            class="w-[23px] min-w-[23px] select-none"
-                            src="~/assets/images/linktree-logo-icon.png"
-                        />
-                    </NuxtLink>
-
                     <div
                         v-for="link in links"
                         class="lg:px-2.5 px-0.5 md:block hidden"
@@ -50,38 +43,6 @@
                 </div>
 
                 <div class="flex items-center justify-between gap-3">
-                    <button
-                        class="flex items-center text-sm font-semibold p-2 rounded-full hover:bg-gray-100"
-                    >
-                        <Icon
-                            name="healthicons:megaphone-outline"
-                            class="mr-0.5"
-                            size="22"
-                        />
-                    </button>
-
-                    <button
-                        class="flex items-center font-semibold px-3 py-2 rounded-full bg-gray-100"
-                    >
-                        <Icon
-                            name="mdi:lightning-bolt"
-                            class="mr-0.5"
-                            size="18"
-                        />
-                        Upgrade
-                    </button>
-
-                    <button
-                        class="flex items-center font-semibold px-3 py-2 rounded-full border hover:bg-gray-100"
-                    >
-                        <Icon
-                            name="teenyicons:upload-solid"
-                            class="mr-1.5"
-                            size="18"
-                        />
-                        Share
-                    </button>
-
                     <button
                         @click="
                             !isTopNav ? openMenu('TopNav') : (isTopNav = false)
@@ -223,59 +184,6 @@
     <div class="px-2.5 w-full z-0">
         <slot />
     </div>
-
-    <div
-        v-if="userStore.isMobile"
-        id="BottomNav"
-        class="fixed z-20 bottom-0 flex w-full bg-white shadow-[0_35px_60px_10px_rgba(0,0,0,0.4)]"
-        :class="userStore.isMobile ? 'h-[70px]' : 'h-[60px]'"
-    >
-        <div class="flex w-full">
-            <div v-for="link in linksMobile" class="w-1/5">
-                <button
-                    class="relative flex justify-center text-sm w-full h-full font-semibold px-1.5 py-1 hover:bg-gray-100"
-                    :class="
-                        link.url == route.fullPath
-                            ? 'border-t-2 border-t-black'
-                            : ''
-                    "
-                >
-                    <NuxtLink :to="link.url" class="relative h-[35px]">
-                        <Icon
-                            v-if="link.icon"
-                            :name="link.icon"
-                            class="mr-0.5 mt-[2px]"
-                            size="25"
-                            :color="
-                                route.fullPath == link.url
-                                    ? '#000000'
-                                    : '#676b5f'
-                            "
-                        />
-                        <img
-                            v-else
-                            class="rounded-full min-w-[25px] w-[25px] mt-[2px]"
-                            :src="link.img"
-                        />
-                        <div
-                            class="relative text-[13px]"
-                            :class="link.img ? '-left-[4px]' : ''"
-                        >
-                            <span
-                                :class="
-                                    route.fullPath == link.url
-                                        ? 'text-black'
-                                        : 'text-[#676b5f]'
-                                "
-                            >
-                                {{ link.name }}
-                            </span>
-                        </div>
-                    </NuxtLink>
-                </button>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script setup>
@@ -306,8 +214,6 @@ const links = ref([
         url: "/admin/appearance",
         icon: "fluent:shapes-48-regular",
     },
-    { name: "Analytics", url: "/", icon: "tabler:brand-google-analytics" },
-    { name: "Settings", url: "/", icon: "material-symbols:settings" },
 ]);
 
 const linksSecondaryNav = ref([
@@ -320,35 +226,6 @@ const linksSecondaryNav = ref([
         name: "Appearance",
         url: "/admin/appearance",
         icon: "fluent:shapes-48-regular",
-    },
-    { name: "Analytics", url: "/", icon: "tabler:brand-google-analytics" },
-    { name: "More", url: "/admin/more", icon: "", img: userStore.image },
-]);
-
-const linksMobile = ref([
-    {
-        name: "Links",
-        url: "/admin",
-        icon: "icon-park-outline:hamburger-button",
-        img: "",
-    },
-    {
-        name: "Appearance",
-        url: "/admin/appearance",
-        icon: "fluent:shapes-48-regular",
-        img: "",
-    },
-    {
-        name: "Preview",
-        url: "/admin/preview",
-        icon: "icon-park-outline:preview-open",
-        img: "",
-    },
-    {
-        name: "Analytics",
-        url: "/",
-        icon: "tabler:brand-google-analytics",
-        img: "",
     },
     { name: "More", url: "/admin/more", icon: "", img: userStore.image },
 ]);
