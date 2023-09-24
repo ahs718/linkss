@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-git clone https://github.com/ahs718/linkss
-cd linkss || exit
-
 # Install npm packages in linkss-site directory
 echo "Installing npm packages..."
 cd linkss-site || exit
