@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\LinkController;
+use App\Http\Controllers\Api\LinkImageController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserImageController;
+use App\Http\Controllers\Api\ThemeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('links/{link}', [LinkController::class, 'destroy']);
 
     Route::post('link-image', [LinkImageController::class, 'store']);
+
+    Route::get('themes', [ThemeController::class, 'index']);
+    Route::patch('themes', [ThemeController::class, 'update']);
 });
