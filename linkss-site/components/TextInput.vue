@@ -6,16 +6,15 @@
                 :placeholder="placeholder"
                 :maxlength="String(max)"
                 class="w-full bg-[#eff0eb] text-gray-800 border-2 text-sm border-[#eff0eb] rounded-xl py-3.5 px-3 placeholder-gray-500 focus:outline-none"
-                @focus="($event) => (isFocused = true)"
-                @blur="($event) => (isFocused = false)"
+                @focus="isFocused = true"
+                @blur="isFocused = false"
                 :class="isFocused ? 'border-gray-900' : ''"
                 :type="inputType"
                 v-model="inputComputed"
                 autocomplete="off"
             />
         </client-only>
-
-        <span v-if="error" class="text-red-500 text-sm font-semibold">
+        <span v-if="error" class="text-red-500 text-[14px] font-semibold">
             {{ error }}
         </span>
     </div>

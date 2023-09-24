@@ -6,7 +6,7 @@
             class="w-full flex items-center justify-between md:pt-2.5 md:px-2.5"
         >
             <div
-                class="flex items-center justify-between md:rounded-full md:shadow-sm px-2 md:pl-6 pl-4 py-2 bg-white w-full border-b"
+                class="flex items-center justify-between md:rounded-full md:shadow-sm px-2 md:pl-6 pl-4 py-[8px] bg-white w-full border-b"
             >
                 <div
                     class="flex items-center justify-start w-full max-w-[500px]"
@@ -64,9 +64,9 @@
                         class="flex items-center font-semibold px-3 py-2 rounded-full bg-gray-100"
                     >
                         <Icon
-                            name="mdi:lightning-bolt-outline"
+                            name="mdi:lightning-bolt"
                             class="mr-0.5"
-                            size="22"
+                            size="18"
                         />
                         Upgrade
                     </button>
@@ -76,18 +76,15 @@
                     >
                         <Icon
                             name="teenyicons:upload-solid"
-                            class="mr-0.5"
-                            size="22"
+                            class="mr-1.5"
+                            size="18"
                         />
                         Share
                     </button>
 
                     <button
                         @click="
-                            ($event) =>
-                                !isTopNav
-                                    ? openMenu('TopNav')
-                                    : (isTopNav = false)
+                            !isTopNav ? openMenu('TopNav') : (isTopNav = false)
                         "
                         class="rounded-full md:block hidden"
                     >
@@ -98,13 +95,12 @@
                     </button>
                 </div>
             </div>
-
             <div
                 v-if="isTopNav"
                 class="absolute md:block hidden right-4 top-16 border shadow-[0_5px_15px_15px_rgba(0,0,0,0.1)] bg-white w-full max-w-[300px] rounded-2xl"
             >
                 <button
-                    @click="($event) => logout()"
+                    @click="logout()"
                     class="w-full flex items-center text-gray-600 text-[15px] p-3 hover:text-black"
                 >
                     <Icon name="circum:logout" class="mr-6" />
@@ -112,7 +108,6 @@
                 </button>
             </div>
         </div>
-
         <div
             v-if="!userStore.isMobile"
             id="SecondaryTopNav"
@@ -120,6 +115,7 @@
         >
             <div
                 class="flex items-center justify-between gap-4 shadow-sm bg-white w-full"
+                :class="route"
             >
                 <div class="flex w-full">
                     <div v-for="link in linksSecondaryNav" class="w-1/4">
@@ -127,7 +123,7 @@
                             :to="link.url"
                             class="relative flex justify-center border-t-black text-sm w-full h-full font-semibold px-1.5 my-[1px] py-[1px] hover:bg-gray-100"
                             :class="
-                                link.url === route.fullPath
+                                link.url == route.fullPath
                                     ? 'border-b-2 border-b-black'
                                     : ''
                             "
@@ -140,7 +136,7 @@
                                     :color="
                                         route.fullPath == link.url
                                             ? '#000000'
-                                            : '#676b5f'
+                                            : '#676B5F'
                                     "
                                 />
                                 <img
@@ -149,13 +145,13 @@
                                     :src="link.img"
                                 />
                                 <div
-                                    class="relative text-[13px] text-[#676b5f]"
+                                    class="relative text-[13px] text-[#676B5F]"
                                     :class="link.img ? '-left-[5px]' : ''"
                                 >
                                     <span
                                         :class="
                                             route.fullPath == link.url
-                                                ? 'text-black'
+                                                ? 'text-[#000000]'
                                                 : 'text-[#676b5f]'
                                         "
                                     >
@@ -175,7 +171,7 @@
             class="fixed bottom-10 w-full flex items-center justify-center"
         >
             <button
-                @click="($event) => (userStore.isPreviewOverlay = true)"
+                @click="userStore.isPreviewOverlay = true"
                 class="md:hidden flex items-center text-[17px] font-semibold px-5 py-2.5 bg-[#dfe2d9] rounded-full"
             >
                 <Icon
@@ -201,10 +197,14 @@
 
                 <div class="flex items-center justify-between gap-3">
                     <button
-                        class="flex items-center text-lg font-semibold px-3 py-2 rounded-full bg-gray-200"
+                        class="flex items-center text-[18px] font-semibold px-3 py-2 rounded-full bg-gray-200"
                     >
                         Upgrade
-                        <Icon name="mdi:lightning-bolt-outline" size="20" />
+                        <Icon
+                            name="mdi:lightning-bolt"
+                            class="ml-1"
+                            size="20"
+                        />
                     </button>
 
                     <button
@@ -220,7 +220,6 @@
             </div>
         </div>
     </div>
-
     <div class="px-2.5 w-full z-0">
         <slot />
     </div>
@@ -245,7 +244,7 @@
                         <Icon
                             v-if="link.icon"
                             :name="link.icon"
-                            class="mr-0.5 mt-0.5"
+                            class="mr-0.5 mt-[2px]"
                             size="25"
                             :color="
                                 route.fullPath == link.url
@@ -260,7 +259,7 @@
                         />
                         <div
                             class="relative text-[13px]"
-                            :class="link.img ? '-left-1' : ''"
+                            :class="link.img ? '-left-[4px]' : ''"
                         >
                             <span
                                 :class="
@@ -281,8 +280,8 @@
 
 <script setup>
 import { useUserStore } from "~/stores/user";
-
 const userStore = useUserStore();
+
 const route = useRoute();
 const router = useRouter();
 
@@ -323,12 +322,7 @@ const linksSecondaryNav = ref([
         icon: "fluent:shapes-48-regular",
     },
     { name: "Analytics", url: "/", icon: "tabler:brand-google-analytics" },
-    {
-        name: "More",
-        url: "/admin/more",
-        icon: "",
-        img: userStore.image,
-    },
+    { name: "More", url: "/admin/more", icon: "", img: userStore.image },
 ]);
 
 const linksMobile = ref([
@@ -356,12 +350,7 @@ const linksMobile = ref([
         icon: "tabler:brand-google-analytics",
         img: "",
     },
-    {
-        name: "More",
-        url: "/admin/more",
-        icon: "",
-        img: userStore.image,
-    },
+    { name: "More", url: "/admin/more", icon: "", img: userStore.image },
 ]);
 
 const currentMobilePage = () => {

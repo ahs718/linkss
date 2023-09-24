@@ -3,7 +3,7 @@
         <div
             class="lg:pt-7 pt-3 lg:px-12 px-6 lg:w-2/3 w-full lg:min-w-[800px]"
         >
-            <NuxtLink to="/" class="inline-block">
+            <NuxtLink to="/admin" class="inline-block">
                 <img
                     class="lg:w-28 w-[75px] select-none"
                     src="~/assets/images/linktree-logo.png"
@@ -33,11 +33,10 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-
 import { useUserStore } from "../stores/user";
-
 const userStore = useUserStore();
 const { updatedLinkId } = storeToRefs(userStore);
+
 const route = useRoute();
 
 onUnmounted(() => (updatedLinkId.value = 0));

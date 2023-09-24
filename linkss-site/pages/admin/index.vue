@@ -1,13 +1,13 @@
 <template>
     <AdminLayout>
-        <div id="AdminPage" class="flex h-screen pb-4">
+        <div id="AdminPage" class="flex h-[100vh] pb-4">
             <div
                 class="lg:w-[calc(100%-500px)] md:w-[calc(100%-330px)] w-full md:pt-20 pt-14"
             >
                 <div class="max-w-[750px] mx-auto pb-24">
                     <button
                         v-if="userStore.isMobile || !showAddLink"
-                        @click="($event) => showAddLinkFunc()"
+                        @click="showAddLinkFunc()"
                         class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228d9] hover:bg-[#6c21b3]"
                         :class="
                             userStore.isMobile
@@ -27,7 +27,7 @@
 
                     <AddLink
                         v-if="!userStore.isMobile"
-                        @close="($event) => (showAddLink = false)"
+                        @close="showAddLink = false"
                         :class="[
                             {
                                 'mt-20 md:mt-8 mb-12 max-h-[1000px] transition-all duration-300 ease-in':
@@ -61,7 +61,6 @@
 <script setup>
 import AdminLayout from "~/layouts/AdminLayout.vue";
 import { useUserStore } from "~/stores/user";
-
 const userStore = useUserStore();
 
 definePageMeta({ middleware: "is-logged-out" });

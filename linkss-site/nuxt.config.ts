@@ -18,34 +18,34 @@ export default defineNuxtConfig({
         "@pinia-plugin-persistedstate/nuxt",
         "@vite-pwa/nuxt",
     ],
-    // pwa: {
-    //     manifest: {
-    //         name: "Linkss",
-    //         short_name: "Linkss",
-    //         description: "Showcase your links",
-    //         theme_color: "#32cd32",
-    //         icons: [
-    //             {
-    //                 src: "pwa-192x192.png",
-    //                 sizes: "192x192",
-    //                 type: "image/png",
-    //             },
-    //             {
-    //                 src: "pwa-512x512.png",
-    //                 sizes: "512x512",
-    //                 type: "image/png",
-    //             },
-    //         ],
-    //     },
-    //     devOptions: {
-    //         enabled: true,
-    //         type: "module",
-    //     },
-    // },
+    pwa: {
+        manifest: {
+            name: "Linkss",
+            short_name: "Linkss",
+            description: "Showcase your links",
+            theme_color: "#32cd32",
+            icons: [
+                {
+                    src: "pwa-192x192.png",
+                    sizes: "192x192",
+                    type: "image/png",
+                },
+                {
+                    src: "pwa-512x512.png",
+                    sizes: "512x512",
+                    type: "image/png",
+                },
+            ],
+        },
+        devOptions: {
+            enabled: true,
+            type: "module",
+        },
+    },
     app: {
         head: {
             charset: "utf-8",
-            viewport: "width=device-width, initial-scale=1 maximum-scale=1",
+            viewport: "width=device-width, initial-scale=1, maximum-scale=1",
         },
     },
 });

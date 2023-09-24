@@ -4,13 +4,9 @@
         class="fixed z-40 top-0 left-0 w-full h-full bg-white px-5"
     >
         <div class="w-full md:hidden flex items-center justify-between">
-            <div class="flex items-center justify-between w-full py-2">
-                <button
-                    type="button"
-                    @click="($event) => close()"
-                    class="rounded-full"
-                >
-                    <Icon name="ic:baseline-check" size="35" color="#676b5f" />
+            <div class="flex items-center justify-between w-full py-[8px]">
+                <button type="button" @click="close()" class="rounded-full">
+                    <Icon name="ic:baseline-check" size="35" color="#676B5F" />
                 </button>
 
                 <div class="flex items-center justify-between gap-8">
@@ -18,18 +14,15 @@
                         <Icon
                             name="mdi:bell-outline"
                             size="30"
-                            color="#676b5f"
+                            color="#676B5F"
                         />
                     </button>
 
-                    <button
-                        @click="($event) => deleteLink()"
-                        class="flex items-center"
-                    >
+                    <button @click="deleteLink()" class="flex items-center">
                         <Icon
                             name="carbon:trash-can"
                             size="27"
-                            color="#676b5f"
+                            color="#676B5F"
                         />
                     </button>
                 </div>
@@ -42,20 +35,19 @@
                 class="flex items-center justify-between w-full"
             >
                 <div
-                    @click="($event) => isFocused('isName')"
+                    @click="isFocused('isName')"
                     class="text-2xl font-semibold mr-2 cursor-pointer"
                 >
                     {{ name }}
                 </div>
                 <Icon
-                    @click="($event) => isFocused('isName')"
+                    @click="isFocused('isName')"
                     class="cursor-pointer"
-                    name="mdi:pencil-outline"
+                    name="octicon:pencil-24"
                     size="25"
-                    color="#676b5f"
+                    color="#676B5F"
                 />
             </div>
-
             <input
                 v-show="isName"
                 id="editNameInputMobile"
@@ -74,13 +66,13 @@
         <div class="flex items-center w-full pt-3 pb-6 border-b-2">
             <div v-show="!isLink" class="flex items-center w-[calc(100%-2px)]">
                 <div
-                    @click="($event) => isFocused('isLink')"
+                    @click="isFocused('isLink')"
                     class="text-lg mr-2 truncate cursor-pointer"
                 >
                     {{ url }}
                 </div>
                 <Icon
-                    @click="($event) => isFocused('isLink')"
+                    @click="isFocused('isLink')"
                     class="cursor-pointer min-w-[17px]"
                     name="octicon:pencil-24"
                     size="25"
@@ -104,7 +96,7 @@
 
         <div id="UploadImageForLink" class="pt-6">
             <button
-                @click="($event) => (openCropper = true)"
+                @click="openCropper = true"
                 class="flex items-center justify-center text-xl w-full py-3 rounded-full text-white font-semibold bg-[#8228d9]"
             >
                 <Icon name="mdi:plus" class="mr-0.5" size="25" />
@@ -122,8 +114,8 @@
         <CropperModal
             v-if="openCropper"
             :linkId="updatedLinkId"
-            @data="($event) => (data = $event)"
-            @close="($event) => (openCropper = false)"
+            @data="data = $event"
+            @close="openCropper = false"
         />
     </div>
 </template>
@@ -131,7 +123,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~/stores/user";
-
 const userStore = useUserStore();
 const { updatedLinkId } = storeToRefs(userStore);
 
@@ -234,7 +225,7 @@ const updateLink = useDebounce(async () => {
 watch(
     () => name.value,
     () => {
-        if (name.value && currentLink.value.name !== name.value) {
+        if (name.value && currentLink.value.name != name.value) {
             errors.value = null;
             updateLink();
         }
@@ -244,7 +235,7 @@ watch(
 watch(
     () => url.value,
     () => {
-        if (url.value && currentLink.value.url !== url.value) {
+        if (url.value && currentLink.value.url != url.value) {
             errors.value = null;
             updateLink();
         }

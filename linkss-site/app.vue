@@ -1,6 +1,7 @@
 <template>
     <VitePwaManifest />
     <div v-if="bgIsGray" class="bg-[#f3f3f1] fixed w-full h-full z-[-1]" />
+
     <NuxtPage v-if="show" />
 
     <UpdateLinkOverlay v-if="isMobile && updatedLinkId" />
@@ -11,7 +12,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~/stores/user";
-
 const userStore = useUserStore();
 const { isMobile, isPreviewOverlay, updatedLinkId, addLinkOverlay, id } =
     storeToRefs(userStore);
@@ -19,6 +19,15 @@ const { isMobile, isPreviewOverlay, updatedLinkId, addLinkOverlay, id } =
 const route = useRoute();
 let show = ref(false);
 let bgIsGray = ref(false);
+
+watch(
+    () => id.value,
+    () => {
+        if (!userStore.colors) {
+            userStore.colors = colors();
+        }
+    }
+);
 
 onMounted(async () => {
     userStore.colors = colors();

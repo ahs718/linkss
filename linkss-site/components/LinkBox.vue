@@ -11,6 +11,7 @@
                         maxlength="18"
                         class="w-full text-sm font-semibold focus:outline-none"
                     />
+
                     <div v-else class="flex items-center w-full">
                         <div
                             @click="
@@ -27,11 +28,10 @@
                         </div>
                         <Icon
                             @click="
-                                ($event) =>
-                                    $emit('updatedInput', {
-                                        id: link.id,
-                                        str: 'isName',
-                                    })
+                                $emit('updatedInput', {
+                                    id: link.id,
+                                    str: 'isName',
+                                })
                             "
                             class="cursor-pointer"
                             name="octicon:pencil-24"
@@ -40,7 +40,6 @@
                         />
                     </div>
                 </div>
-
                 <div class="flex items-center">
                     <Icon
                         class="cursor-pointer"
@@ -71,17 +70,16 @@
                                 });
                             "
                             class="mr-2 truncate cursor-pointer"
-                            :class="isMobile ? 'text-xl' : 'text-sm'"
+                            :class="isMobile ? 'text-lg' : 'text-sm'"
                         >
                             {{ link.url }}
                         </div>
                         <Icon
                             @click="
-                                ($event) =>
-                                    $emit('updatedInput', {
-                                        id: link.id,
-                                        str: 'isLink',
-                                    })
+                                $emit('updatedInput', {
+                                    id: link.id,
+                                    str: 'isLink',
+                                })
                             "
                             class="cursor-pointer min-w-[17px]"
                             :class="isMobile ? 'min-w-[23px]' : 'min-w-[17px]'"
@@ -96,7 +94,7 @@
             <div class="flex items-center justify-between py-1 mt-4">
                 <div class="flex items-center w-full relative">
                     <div
-                        class="flex items-center px-1.5 py-0.5 absolute -left-1.5 rounded-md"
+                        class="flex items-center px-1.5 py-[2px] absolute -left-[6px] rounded-md"
                         :class="
                             isUploadImage ? 'bg-[#8228d9]' : 'hover:bg-gray-200'
                         "
@@ -110,19 +108,16 @@
                         />
                     </div>
                 </div>
-
                 <div v-if="!isMobile" class="flex items-center">
                     <div
-                        class="flex items-center px-1.5 py-0.5 rounded-md relative"
+                        class="flex items-center px-1.5 py-[2px] rounded-md relative"
                     >
                         <button
                             @click="
-                                ($event) => {
-                                    isDelete = true;
-                                    isUploadImage = false;
-                                }
+                                isDelete = true;
+                                isUploadImage = false;
                             "
-                            class="flex items-center px-1.5 py-0.5 absolute -right-1.5 rounded-md"
+                            class="flex items-center px-1.5 py-[2px] absolute -right-[6px] rounded-md"
                             :class="
                                 isDelete ? 'bg-[#8228d9]' : 'hover:bg-gray-200'
                             "
@@ -151,12 +146,12 @@
             ]"
         >
             <button
-                @click="($event) => (isDelete = false)"
+                @click="isDelete = false"
                 class="relative w-full bg-[#dfe2d9] py-1.5"
             >
                 <Icon
                     name="mdi:close"
-                    class="absolute right-1 top-1.5 cursor-pointer"
+                    class="absolute right-1 top-[6px] cursor-pointer"
                     size="20"
                     color="#45494a"
                 />
@@ -172,7 +167,7 @@
             <div class="w-full px-4 py-3">
                 <div class="flex items-center gap-2 w-full">
                     <button
-                        @click="($event) => deleteLink()"
+                        @click="deleteLink()"
                         class="flex items-center border justify-center w-full py-3 rounded-full text-black font-semibold hover:bg-gray-100"
                     >
                         Remove
@@ -197,9 +192,9 @@
         >
             <div class="relative w-full bg-[#dfe2d9] py-1.5">
                 <Icon
-                    @click="($event) => (isUploadImage = false)"
+                    @click="isUploadImage = false"
                     name="mdi:close"
-                    class="absolute right-1 top-1.5 cursor-pointer"
+                    class="absolute right-1 top-[6px] cursor-pointer"
                     size="20"
                     color="#45494a"
                 />
@@ -216,7 +211,7 @@
 
                 <div class="w-full pl-3">
                     <button
-                        @click="($event) => (openCropper = true)"
+                        @click="openCropper = true"
                         class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228d9] hover:bg-[#6c21b3] mb-2"
                     >
                         Change
@@ -228,8 +223,8 @@
         <CropperModal
             v-if="openCropper"
             :linkId="link.id"
-            @data="($event) => (data = $event)"
-            @close="($event) => (openCropper = false)"
+            @data="data = $event"
+            @close="openCropper = false"
         />
     </div>
 </template>
@@ -237,7 +232,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~/stores/user";
-
 const userStore = useUserStore();
 const { isMobile, updatedLinkId } = storeToRefs(userStore);
 
@@ -246,7 +240,6 @@ const props = defineProps({
     selectedId: { type: Number, default: 0 },
     selectedStr: { type: String, default: "" },
 });
-
 const { link, selectedId, selectedStr } = toRefs(props);
 
 const emit = defineEmits(["updatedInput"]);
@@ -299,6 +292,7 @@ const updateLink = useDebounce(async () => {
         await userStore.getAllLinks();
     } catch (error) {
         console.log(error);
+        errors.value = error.response.data.errors;
     }
 }, 500);
 

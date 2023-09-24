@@ -1,7 +1,7 @@
 <template>
     <div
         id="PreviewOverlay"
-        class="md:hidden fixed bg-white z-30 top-0 left-0 h-full w-full overflow-auto"
+        class="md:hidden fixed z-30 top-0 left-0 h-full w-full overflow-auto"
         :class="userStore.theme.color"
     >
         <div
@@ -9,14 +9,10 @@
             class="w-full fixed z-10 flex items-center justify-between"
         >
             <div
-                class="flex items-center justify-between p-2 pl-4 bg-white w-full border-b"
+                class="flex items-center justify-between px-2 py-[8px] pl-4 bg-white w-full border-b"
             >
                 <div class="flex items-center justify-start w-full">
-                    <button
-                        @click="
-                            ($event) => (userStore.isPreviewOverlay = false)
-                        "
-                    >
+                    <button @click="userStore.isPreviewOverlay = false">
                         <img
                             class="w-[23px] min-w-[23px] select-none"
                             src="~/assets/images/linktree-logo-icon.png"
@@ -39,7 +35,7 @@
                         class="flex items-center font-semibold px-3 py-2 rounded-full bg-gray-100"
                     >
                         <Icon
-                            name="mdi:lightning-bolt-outline"
+                            name="mdi:lightning-bolt"
                             class="mr-0.5"
                             size="18"
                         />
@@ -92,19 +88,20 @@
                             :href="link.url"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="flex items-center relative w-[calc(100%-10px)] mx-auto border bg-white mt-4 p-1 rounded-lg"
+                            class="flex items-center relative border w-[calc(100%-10px)] mx-auto bg-white mt-4 p-1 rounded-lg"
                         >
                             <img
                                 class="rounded-lg h-[45px] aspect-square"
                                 :src="link.image"
                             />
 
-                            <div class="absolute text-base text-center w-full">
+                            <div
+                                class="absolute text-[16px] text-center w-full"
+                            >
                                 {{ link.name }}
                             </div>
                         </a>
                     </div>
-
                     <div class="pb-28" />
                 </div>
             </div>
@@ -115,7 +112,7 @@
             class="fixed bottom-10 w-full flex items-center justify-center"
         >
             <button
-                @click="($event) => (userStore.isPreviewOverlay = false)"
+                @click="userStore.isPreviewOverlay = false"
                 class="flex items-center justify-center p-2.5 bg-[#dfe2d9] rounded-full"
             >
                 <Icon name="mdi:close" size="30" />
@@ -126,7 +123,6 @@
 
 <script setup>
 import { useUserStore } from "~/stores/user";
-
 const userStore = useUserStore();
 
 onUnmounted(() => (userStore.isPreviewOverlay = false));

@@ -1,6 +1,6 @@
 <template>
     <AdminLayout>
-        <div id="ApperancePage" class="flex h-[calc(100%-50px)] pb-4">
+        <div id="AppearancePage" class="flex h-[calc(100%-50px)] pb-4">
             <div
                 class="lg:w-[calc(100%-500px)] md:w-[calc(100%-330px)] w-full md:pt-20 pt-14"
             >

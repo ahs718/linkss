@@ -7,7 +7,7 @@
         >
             <div class="rounded-md bg-white w-full">
                 <button
-                    @click="($event) => logout()"
+                    @click="logout()"
                     class="w-full flex items-center text-gray-600 p-3 hover:text-black"
                     :class="userStore.isMobile ? 'text-[20px]' : 'text-[15px]'"
                 >
@@ -26,7 +26,6 @@
 <script setup>
 import AdminLayout from "~/layouts/AdminLayout.vue";
 import { useUserStore } from "~/stores/user";
-
 const userStore = useUserStore();
 const router = useRouter();
 
@@ -46,7 +45,6 @@ const logout = async () => {
         if (res) {
             await userStore.logout();
             window.location.assign("/");
-            return;
         }
     } catch (error) {
         console.log(error);

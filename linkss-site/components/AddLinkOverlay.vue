@@ -1,18 +1,18 @@
 <template>
-    <div
+    <div 
         id="AddLinkOverlay"
         class="fixed z-40 top-0 left-0 w-full h-full bg-white px-5"
     >
-        <div class="flex items-center justify-start w-full py-2">
-            <button
+        <div class="flex items-center justify-start w-full py-[8px]">
+            <button 
                 type="button"
-                @click="($event) => close()"
+                @click="close()"
                 class="rounded-full"
             >
-                <Icon
-                    name="material-symbols:arrow-back-sharp"
-                    size="35"
-                    color="#676b5f"
+                <Icon 
+                    name="material-symbols:arrow-back-sharp" 
+                    size="35" 
+                    color="#676B5F" 
                 />
             </button>
 
@@ -21,12 +21,12 @@
 
         <div class="text-2xl font-semibold pt-10">Enter URL</div>
 
-        <form
-            @submit.prevent="($event) => submit()"
+        <form 
+            @submit.prevent="submit()" 
             class="flex items-center gap-4 w-full pt-4"
         >
             <div class="w-full">
-                <TextInput
+                <TextInput 
                     class="w-full"
                     placeholder="Name"
                     v-model:input="name"
@@ -36,7 +36,7 @@
 
                 <div class="py-1" />
 
-                <TextInput
+                <TextInput 
                     class="w-full"
                     placeholder="URL"
                     v-model:input="url"
@@ -47,13 +47,13 @@
 
             <button
                 type="submit"
-                @click="($event) => addLink()"
-                class="rounded-full p-2 bg-[#eff0ea]"
+                @click="addLink()"
+                class="rounded-full p-2 bg-[#EFF0EA]"
             >
-                <Icon
-                    name="material-symbols:arrow-forward-sharp"
-                    size="25"
-                    color="#676b5f"
+                <Icon 
+                    name="material-symbols:arrow-forward-sharp" 
+                    size="25" 
+                    color="#676B5F" 
                 />
             </button>
         </form>
@@ -61,37 +61,35 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
-import { useUserStore } from "~/stores/user";
+import { useUserStore } from '~~/stores/user'
+import { storeToRefs } from 'pinia';
+const userStore = useUserStore()
+const { addLinkOverlay } = storeToRefs(userStore)
 
-const userStore = useUserStore();
-const { addLinkOverlay } = storeToRefs(userStore);
+onMounted(() => userStore.hidePageOverflow(true, 'AdminPage'))
 
-onMounted(() => userStore.hidePageOverflow(true, "AdminPage"));
+const close = () => addLinkOverlay.value = false
 
-const close = () => (addLinkOverlay.value = false);
-
-let name = ref("");
-let url = ref("");
-let errors = ref(null);
+let name = ref('')
+let url = ref('')
+let errors = ref(null)
 
 const addLink = async () => {
     try {
-        await userStore.addLink(name.value, url.value);
-        await userStore.getAllLinks();
-        setTimeout(() => {
-            name.value = "";
-            url.value = "";
-            addLinkOverlay.value = false;
-        }, 100);
+        await userStore.addLink(name.value, url.value)
+        await userStore.getAllLinks()
+        setTimeout(() => { 
+            name.value = ''
+            url.value = ''
+            addLinkOverlay.value = false
+        }, 100)
     } catch (error) {
-        console.log(error);
-        errors.value = error.response.data.errors;
+        errors.value = error.response.data.errors
     }
-};
+}
 
 onUnmounted(() => {
-    userStore.hidePageOverflow(false, "AdminPage");
-    addLinkOverlay.value = false;
-});
+    userStore.hidePageOverflow(false, 'AdminPage')
+    addLinkOverlay.value = false
+})
 </script>
