@@ -1,6 +1,6 @@
 <template>
     <AdminLayout>
-        <div id="AppearancePage" class="flex h-[calc(100%-50px)] pb-4">
+        <div id="ApperancePage" class="flex h-[calc(100%-50px)] pb-4">
             <div
                 class="lg:w-[calc(100%-500px)] md:w-[calc(100%-330px)] w-full md:pt-20 pt-14"
             >
@@ -21,17 +21,14 @@
                             <div
                                 class="flex items-center justify-between gap-4"
                             >
-                                <!-- :src="userStore.image" -->
                                 <img
                                     class="rounded-full w-[90px]"
-                                    src="https://picsum.photos/id/8/300/320"
+                                    :src="userStore.image"
                                 />
 
                                 <div class="w-full">
                                     <button
-                                        @click="
-                                            ($event) => (openCropper = true)
-                                        "
+                                        @click="openCropper = true"
                                         class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228d9] hover:bg-[#6c21b3] mb-2"
                                     >
                                         Pick image
@@ -53,22 +50,16 @@
                                 />
                             </div>
 
-                            <client-only>
-                                <textarea
-                                    v-model="bio"
-                                    rows="4"
-                                    maxlength="80"
-                                    placeholder="Bio"
-                                    @focus="($event) => (isBioFocused = true)"
-                                    @blur="($event) => (isBioFocused = false)"
-                                    :class="
-                                        isBioFocused ? 'border-gray-900' : ''
-                                    "
-                                    class="w-full mt-4 bg-[#eff0eb] text-gray-800 border-2 text-sm border-[#eff0eb] rounded-xl py-3.5 px-3 placeholder-gray-500 resize-none focus:outline-none"
-                                >
-                                </textarea>
-                            </client-only>
-
+                            <textarea
+                                v-model="bio"
+                                rows="4"
+                                maxlength="80"
+                                placeholder="Bio"
+                                @focus="isBioFocused = true"
+                                @blur="isBioFocused = false"
+                                :class="isBioFocused ? 'border-gray-900' : ''"
+                                class="w-full mt-4 bg-[#eff0eb] text-gray-800 border-2 text-sm border-[#eff0eb] rounded-xl py-3.5 px-3 placeholder-gray-500 resize-none focus:outline-none"
+                            ></textarea>
                             <div
                                 class="flex items-center justify-end text-[#676b5f] text-[13px]"
                             >
@@ -98,21 +89,18 @@
                                         class="border-2 border-gray-500 rounded-lg aspect-[2/3] border-dashed cursor-pointer"
                                         :class="
                                             userStore.theme_id == item.id
-                                                ? 'transition-all ease-in p-2'
-                                                : 'transition-all ease-out p-0'
+                                                ? 'transition-all duration-150 ease-in p-2'
+                                                : 'transition-all duration-150 ease-out p-0'
                                         "
                                     >
                                         <div
-                                            @click="
-                                                ($event) => updateTheme(item.id)
-                                            "
+                                            @click="updateTheme(item.id)"
                                             class="relative rounded-xl h-full mx-auto"
                                         >
                                             <div
                                                 class="absolute left-0 top-0 h-full w-full z-0"
                                                 :class="item.color"
                                             />
-
                                             <div class="relative z-10 pt-9">
                                                 <div
                                                     class="rounded-full mx-auto w-12 h-12 bg-[#eff0ea]/70"
@@ -143,8 +131,8 @@
             <MobileSectionDisplay />
             <CropperModal
                 v-if="openCropper"
-                @data="($event) => (data = $event)"
-                @close="($event) => (openCropper = false)"
+                @data="data = $event"
+                @close="openCropper = false"
             />
         </div>
     </AdminLayout>
@@ -153,7 +141,6 @@
 <script setup>
 import AdminLayout from "~/layouts/AdminLayout.vue";
 import { useUserStore } from "~/stores/user";
-
 const userStore = useUserStore();
 
 definePageMeta({ middleware: "is-logged-out" });
@@ -171,19 +158,37 @@ onMounted(() => {
 });
 
 const updateTheme = async (themeId) => {
-    //
+    try {
+        await userStore.updateTheme(themeId);
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 const updateUserDetails = useDebounce(async () => {
-    //
-});
+    try {
+        await userStore.updateUserDetails(name.value, bio.value);
+        await userStore.getUser();
+    } catch (error) {
+        console.log(error);
+        errors.value = error.response.data.errors;
+    }
+}, 1000);
 
 const bioLengthComputed = computed(() => {
     return !bio.value ? 0 : bio.value.length;
 });
 
 const updateUserImage = async () => {
-    //
+    try {
+        await userStore.updateUserImage(data.value);
+        await userStore.getUser();
+        setTimeout(() => (openCropper.value = false), 300);
+    } catch (error) {
+        openCropper.value = false;
+        alert(error);
+        console.log(error);
+    }
 };
 
 watch(

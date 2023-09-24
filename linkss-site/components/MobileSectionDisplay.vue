@@ -1,5 +1,6 @@
 <template>
     <div
+        v-if="userStore.theme"
         class="md:block fixed hidden right-0 lg:w-[500px] w-[310px] h-[calc(100%-20px)] mt-5 mx-auto border-l border-l-gray-300 pt-20"
     >
         <div
@@ -12,34 +13,32 @@
 
             <div
                 class="w-full h-full absolute lg:max-w-[220px] max-w-[195px] rounded-3xl z-0"
-                :class="userStore.theme?.color"
+                :class="userStore.theme.color"
             />
 
             <div class="h-full mx-auto w-full overflow-auto z-10">
-                <!-- userStore.image -->
                 <img
                     class="rounded-full min-w-[60px] w-[60px] mx-auto mt-8"
-                    src="https://picsum.photos/id/8/300/320"
+                    :src="userStore.image"
                 />
 
                 <div
                     class="text-center text-sm font-semibold mt-4 break-words"
-                    :class="userStore.theme?.text"
+                    :class="userStore.theme.text"
                 >
-                    @ahs
+                    @{{ userStore.allLowerCaseNoCaps(userStore.name) }}
                 </div>
 
                 <div
                     class="text-center text-[8px] font-semibold mt-2"
-                    :class="userStore.theme?.text"
+                    :class="userStore.theme.text"
                 >
                     <div class="px-8 break-words">
-                        {{ userStore.bio || "this is the bio section" }}
+                        {{ userStore.bio }}
                     </div>
                 </div>
 
-                <!-- userStore.allLinks -->
-                <div v-for="link in fakeLink">
+                <div v-for="link in userStore.allLinks">
                     <a
                         :href="link.url"
                         target="_blank"
@@ -71,25 +70,4 @@
 import { useUserStore } from "~/stores/user";
 
 const userStore = useUserStore();
-
-const fakeLink = [
-    {
-        id: 1,
-        name: "Github",
-        url: "https://github.com/ahs718",
-        image: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-    },
-    {
-        id: 2,
-        name: "LinkedIn",
-        url: "https://www.linkedin.com/in/aiden-schulman",
-        image: "https://img.freepik.com/premium-vector/square-linkedin-logo-isolated-white-background_469489-892.jpg",
-    },
-    {
-        id: 3,
-        name: "Instagram",
-        url: "https://www.instagram.com/ahs718_",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/600px-Instagram_logo_2022.svg.png?20220518162235",
-    },
-];
 </script>

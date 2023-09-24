@@ -1,83 +1,65 @@
 <template>
-    <AuthLayout>
-        <div class="mt-10">
-            <h1 class="lg:text-5xl text-3xl text-center font-extrabold">
-                Log in to your Linktree
-            </h1>
+    <div
+        class="fixed overflow-auto w-full h-screen"
+        :class="userStore.theme.color"
+    />
 
-            <form class="mt-12" @submit.prevent="login()">
-                <div>
-                    <TextInput
-                        placeholder="Email: link@gmail.com"
-                        v-model:input="email"
-                        inputType="email"
-                        :error="errors && errors.email ? errors.email[0] : ''"
+    <AdminLayout>
+        <div id="PreviewAdminPage" class="w-full mx-auto pt-32 relative z-10">
+            <div class="mx-auto w-full">
+                <div class="h-full mx-auto w-full">
+                    <img
+                        class="rounded-full min-w-[120px] w-[120px] mx-auto"
+                        :src="userStore.image"
                     />
-                </div>
 
-                <div class="mt-4">
-                    <TextInput
-                        placeholder="Password"
-                        v-model:input="password"
-                        inputType="password"
-                        :error="
-                            errors && errors.password ? errors.password[0] : ''
-                        "
-                    />
-                </div>
-
-                <div class="mt-10">
-                    <button
-                        type="submit"
-                        class="rounded-full w-full p-3 font-bold"
-                        :disabled="!email || !password"
-                        :class="
-                            email && password
-                                ? 'bg-[#8228D9] hover:bg-[#6c21b3] text-white'
-                                : 'bg-[#EFF0EB] text-[#A7AAA2]'
-                        "
+                    <div
+                        class="text-center text-2xl font-semibold mt-2"
+                        :class="userStore.theme.text"
                     >
-                        Log in
-                    </button>
-                </div>
-            </form>
+                        @{{ userStore.allLowerCaseNoCaps(userStore.name) }}
+                    </div>
 
-            <div class="text-[14px] text-center pt-12">
-                Don't have an account?
-                <NuxtLink to="/register" class="text-[#8228D9] underline">
-                    Sign up
-                </NuxtLink>
+                    <div
+                        class="text-center text-lg font-light mt-2 mb-10"
+                        :class="userStore.theme.text"
+                    >
+                        <div class="px-8">
+                            {{ userStore.bio }}
+                        </div>
+                    </div>
+
+                    <div v-for="link in userStore.allLinks">
+                        <a
+                            :href="link.url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex items-center relative border w-[calc(100%-10px)] mx-auto bg-white mt-4 p-1 rounded-lg"
+                        >
+                            <img
+                                class="rounded-lg h-[55px] aspect-square"
+                                :src="link.image"
+                            />
+
+                            <div
+                                class="absolute text-[20px] text-center w-full"
+                            >
+                                {{ link.name }}
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="pb-32" />
+                </div>
             </div>
         </div>
-    </AuthLayout>
+    </AdminLayout>
 </template>
 
 <script setup>
-import AuthLayout from "~/layouts/AuthLayout.vue";
-
+import AdminLayout from "~~/layouts/AdminLayout.vue";
 import { useUserStore } from "~~/stores/user";
 const userStore = useUserStore();
 
-const router = useRouter();
-
 definePageMeta({ middleware: "is-logged-out" });
-
-let email = ref(null);
-let password = ref(null);
-let errors = ref(null);
-
-const login = async () => {
-    errors.value = null;
-
-    try {
-        await userStore.getTokens();
-        await userStore.login(email.value, password.value);
-        await userStore.getUser();
-        await userStore.getAllLinks();
-        router.push("/admin");
-    } catch (error) {
-        console.log(error);
-        errors.value = error.response.data.errors;
-    }
-};
 </script>

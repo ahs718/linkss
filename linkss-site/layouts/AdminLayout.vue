@@ -93,7 +93,7 @@
                     >
                         <img
                             class="rounded-full min-w-[40px] w-[40px]"
-                            src="https://picsum.photos/id/8/300/320"
+                            :src="userStore.image"
                         />
                     </button>
                 </div>
@@ -327,8 +327,7 @@ const linksSecondaryNav = ref([
         name: "More",
         url: "/admin/more",
         icon: "",
-        // userStore.image
-        img: "https://picsum.photos/id/8/300/320",
+        img: userStore.image,
     },
 ]);
 
@@ -361,8 +360,7 @@ const linksMobile = ref([
         name: "More",
         url: "/admin/more",
         icon: "",
-        // userStore.image
-        img: "https://picsum.photos/id/8/300/320",
+        img: userStore.image,
     },
 ]);
 
@@ -394,7 +392,7 @@ const logout = async () => {
     try {
         if (res) {
             await userStore.logout();
-            router.push("/");
+            window.location.assign("/");
             return;
         }
         isTopNav.value = false;

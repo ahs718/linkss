@@ -1,6 +1,6 @@
 <template>
     <div class="fixed z-50 h-full">
-        <div class="fixed inset-0 bg-black/60" />
+        <div class="fixed inset-0 bg-black bg-opacity-60"></div>
         <div class="fixed inset-0 z-10 overflow-auto h-full">
             <div
                 class="flex flex-col min-h-full justify-center items-center py-2"
@@ -14,10 +14,10 @@
                         <div
                             class="text-[22px] font-semibold w-full text-center"
                         >
-                            Pick Image
+                            Pick image
                         </div>
                         <div
-                            @click="($event) => $emit('close')"
+                            @click="$emit('close')"
                             class="absolute right-3 rounded-full p-1.5 bg-gray-200 hover:bg-gray-300 cursor-pointer"
                         >
                             <Icon name="mdi:close" size="25" />
@@ -29,7 +29,7 @@
                             <div v-if="!uploadedImage" class="my-4">
                                 <label
                                     for="file"
-                                    class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228d9] hover:bg-[#6c21b3] mb-2 cursor-pointer"
+                                    class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228D9] hover:bg-[#6c21b3] mb-2 cursor-pointer"
                                 >
                                     Upload photo
                                 </label>
@@ -46,8 +46,8 @@
                                 class="my-4"
                             >
                                 <button
-                                    @click="($event) => startCamera()"
-                                    class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228d9] hover:bg-[#6c21b3] mb-2 cursor-pointer"
+                                    @click="startCamera()"
+                                    class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228D9] hover:bg-[#6c21b3] mb-2 cursor-pointer"
                                 >
                                     Open camera
                                 </button>
@@ -88,16 +88,16 @@
                                 :class="uploadedImage ? 'pt-4' : ''"
                             >
                                 <button
+                                    @click="$emit('close')"
                                     type="button"
-                                    @click="($event) => $emit('close')"
                                     class="flex items-center border justify-center w-full py-3 rounded-full text-black font-semibold hover:bg-gray-100 focus:outline-none focus:ring-0 cursor-pointer"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     v-if="isOpenCamera"
-                                    @click="($event) => takePhoto()"
-                                    class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228d9] hover:bg-[#6c21b3] cursor-pointer focus:outline-none focus:ring-0"
+                                    @click="takePhoto()"
+                                    class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228D9] hover:bg-[#6c21b3] cursor-pointer focus:outline-none focus:ring-0"
                                 >
                                     <span v-show="!isTakingPhoto">
                                         Take photo
@@ -108,13 +108,12 @@
                                         size="25"
                                     />
                                 </button>
-
                                 <button
                                     v-if="uploadedImage"
-                                    @click="($event) => cropImage()"
-                                    class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228d9] hover:bg-[#6c21b3] cursor-pointer focus:outline-none focus:ring-0"
+                                    @click="cropImage()"
+                                    class="flex items-center justify-center w-full py-3 rounded-full text-white font-semibold bg-[#8228D9] hover:bg-[#6c21b3] cursor-pointer focus:outline-none focus:ring-0"
                                 >
-                                    <span v-show="!isCropping">Crop image</span>
+                                    <span v-show="!isCropping">Crop Image</span>
                                     <Icon
                                         v-show="isCropping"
                                         name="eos-icons:loading"
@@ -144,8 +143,8 @@ const { linkId } = toRefs(props);
 let file = ref(null);
 let video = ref(null);
 let canvas = ref(null);
-let isNewPhoto = ref(false);
-let isOpenCamera = ref(false);
+let isNewPhoto = ref(null);
+let isOpenCamera = ref(null);
 let photoData = ref(null);
 let cropper = ref(null);
 let uploadedImage = ref(null);

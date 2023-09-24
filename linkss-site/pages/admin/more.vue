@@ -45,7 +45,7 @@ const logout = async () => {
     try {
         if (res) {
             await userStore.logout();
-            router.push("/");
+            window.location.assign("/");
             return;
         }
     } catch (error) {

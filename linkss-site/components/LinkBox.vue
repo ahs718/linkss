@@ -211,7 +211,7 @@
             <div class="w-full flex items-center justify-between px-4 py-5">
                 <img
                     class="rounded-lg w-[80px] aspect-square"
-                    src="https://picsum.photos/id/8/300/320"
+                    :src="link.image"
                 />
 
                 <div class="w-full pl-3">
@@ -294,7 +294,12 @@ onMounted(() => {
 });
 
 const updateLink = useDebounce(async () => {
-    //
+    try {
+        await userStore.updateLink(link.value.id, name.value, url.value);
+        await userStore.getAllLinks();
+    } catch (error) {
+        console.log(error);
+    }
 }, 500);
 
 const changeInput = (str, linkIdNameString) => {
@@ -338,12 +343,25 @@ const editImage = () => {
 };
 
 const updateLinkImage = async () => {
-    //
+    try {
+        await userStore.updateLinkImage(data.value);
+        await userStore.getAllLinks();
+        setTimeout(() => (openCropper.value = false), 300);
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 const deleteLink = async () => {
     let res = confirm("Are you sure you want to delete this link?");
-    //
+    try {
+        if (res) {
+            await userStore.deleteLink(link.value.id);
+            await userStore.getAllLinks();
+        }
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 watch(

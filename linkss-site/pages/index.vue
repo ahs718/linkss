@@ -73,7 +73,7 @@ const login = async () => {
         await userStore.getTokens();
         await userStore.login(email.value, password.value);
         await userStore.getUser();
-        // await userStore.getAllLinks();
+        await userStore.getAllLinks();
         router.push("/admin");
     } catch (error) {
         console.log(error);

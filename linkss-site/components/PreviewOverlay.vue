@@ -2,7 +2,7 @@
     <div
         id="PreviewOverlay"
         class="md:hidden fixed bg-white z-30 top-0 left-0 h-full w-full overflow-auto"
-        :class="userStore.theme?.color"
+        :class="userStore.theme.color"
     >
         <div
             id="PreviewOverlayTopNav"
@@ -66,30 +66,28 @@
         >
             <div class="mx-auto mb-16 w-full p-3">
                 <div class="h-full mx-auto w-full overflow-auto z-10">
-                    <!-- :src="userStore.image" -->
                     <img
                         class="rounded-full min-w-[100px] w-[100px] mx-auto"
-                        src="https://picsum.photos/id/8/300/320"
+                        :src="userStore.image"
                     />
 
                     <div
                         class="text-center text-xl font-semibold mt-4"
-                        :class="userStore.theme?.text"
+                        :class="userStore.theme.text"
                     >
-                        @ahs
+                        @{{ userStore.allLowerCaseNoCaps(userStore.name) }}
                     </div>
 
                     <div
                         class="text-center font-light mt-2"
-                        :class="userStore.theme?.text"
+                        :class="userStore.theme.text"
                     >
                         <div class="px-8">
-                            {{ userStore.bio || "this is the bio section" }}
+                            {{ userStore.bio }}
                         </div>
                     </div>
 
-                    <!-- userStore.allLinks -->
-                    <div v-for="link in fakeLink">
+                    <div v-for="link in userStore.allLinks">
                         <a
                             :href="link.url"
                             target="_blank"
@@ -132,25 +130,4 @@ import { useUserStore } from "~/stores/user";
 const userStore = useUserStore();
 
 onUnmounted(() => (userStore.isPreviewOverlay = false));
-
-const fakeLink = [
-    {
-        id: 1,
-        name: "Github",
-        url: "https://github.com/ahs718",
-        image: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-    },
-    {
-        id: 2,
-        name: "LinkedIn",
-        url: "https://www.linkedin.com/in/aiden-schulman",
-        image: "https://img.freepik.com/premium-vector/square-linkedin-logo-isolated-white-background_469489-892.jpg",
-    },
-    {
-        id: 3,
-        name: "Instagram",
-        url: "https://www.instagram.com/ahs718_",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/600px-Instagram_logo_2022.svg.png?20220518162235",
-    },
-];
 </script>
