@@ -34,6 +34,7 @@ class FileService
 
         $name = time() . '.' . $extension;
         $image->save(public_path() . '/files/' . $name);
+        $model->image = '/files/' . $name;
 
         return $model;
     }
