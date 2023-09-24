@@ -17,24 +17,24 @@ cd ../linkss-api || exit
 composer update
 
 # Copy .env.example to .env
-cp .env.example .env
 echo ""
 echo "================================================================="
 echo ""
+cp .env.example .env
 echo "Copied .env.example to .env..."
 
 # Generate application key
-php artisan key:generate
 echo ""
 echo "================================================================="
 echo ""
+php artisan key:generate
 echo "Generated application key and wrote value to .env file"
 
 # Start mysql server
-mysql.server start || exit
 echo ""
 echo "================================================================="
 echo ""
+mysql.server start || exit
 echo "Started mysql server"
 
 # Navigate to project root directory
