@@ -79,7 +79,7 @@
                 :class="route"
             >
                 <div class="flex w-full">
-                    <div v-for="link in linksSecondaryNav" class="w-1/4">
+                    <div v-for="link in linksSecondaryNav" class="w-1/3">
                         <NuxtLink
                             :to="link.url"
                             class="relative flex justify-center border-t-black text-sm w-full h-full font-semibold px-1.5 my-[1px] py-[1px] hover:bg-gray-100"
