@@ -16,14 +16,13 @@ class LinkImageController extends Controller
     {
         $request->validate([
             'id' => 'required',
-            'image' => 'required|mimes:png,jpg,jpeg',
+            'image' => 'required|mimes:png,jpg,jpeg'
         ]);
 
         try {
             $link = Link::where('id', $request->input('id'))
                 ->where('user_id', auth()->user()->id)
                 ->first();
-
             $link = (new FileService)->updateImage($link, $request);
             $link->save();
 
