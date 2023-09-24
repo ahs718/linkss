@@ -54,8 +54,8 @@ class LinkController extends Controller
     public function update(Request $request, Link $link)
     {
         $request->validate([
-            'name' => 'required|max:20',
-            'url' => 'required|active_url',
+            'name' => 'required|max:18',
+            'url' => 'required',
         ]);
 
         try {
@@ -77,12 +77,17 @@ class LinkController extends Controller
         try {
             if (
                 !is_null($link->image)
-                && file_exists(public_path() . $link->image)
-                && $link->image != '/user-placeholder.png'
-                && $link->image != '/link-placeholder.png'
+                && file_exists(
+                    public_path() . $link->image
+                        && $link->image != '/user-placeholder.png'
+                        && $link->image != '/link-placeholder.png'
+                )
             ) {
                 unlink(public_path() . $link->image);
             }
+            $link->delete();
+
+            return response()->json('LINK DETAILS DELETED', 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }
